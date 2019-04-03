@@ -47,9 +47,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         movieTableView.allowsSelection = false
     }
 
-
+    //MARK: Tableview Datasource and Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movieInfo.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MovieTableViewCell
+        
+        cell.imgPoster.image = UIImage(named: movieInfo[indexPath.row].poster)
+        cell.lblName.text = movieInfo[indexPath.row].name
+        cell.lblReleaseDate.text = movieInfo[indexPath.row].releaseDate
+        
+        cell.delegate = self
+        return cell
     }
     
     //MARK: check movie is like or unliked
@@ -70,7 +81,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
        
-        //MARK: alert values set and call
+        //alert values set and call
         let strLike = NSMutableAttributedString(string: isLiked ? "You liked " : "You disliked ")
         let strMovieName = NSMutableAttributedString(string: movieInfo[tappedIndexPath.row].poster, attributes: myAttributes)
         
@@ -90,16 +101,5 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MovieTableViewCell
-        
-        cell.imgPoster.image = UIImage(named: movieInfo[indexPath.row].poster)
-        cell.lblName.text = movieInfo[indexPath.row].name
-        cell.lblReleaseDate.text = movieInfo[indexPath.row].releaseDate
-      
-        cell.delegate = self
-        return cell
     }
 }
