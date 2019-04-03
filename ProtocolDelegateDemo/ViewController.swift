@@ -45,7 +45,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         movieTableView.dataSource = self
         
         movieTableView.allowsSelection = false
-        
     }
 
 
@@ -59,22 +58,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         guard let tappedIndexPath = movieTableView.indexPath(for: sender) else {
             return
         }
-       
-        //MARK: alert values set and call
-        let alertTitle = NSMutableAttributedString(string: isLiked ? "Like" : "Unlike")
         
-        let strLike = NSMutableAttributedString(string: isLiked ? "You liked " : "You disliked ")
-        let strMovieName = NSMutableAttributedString(string: movieInfo[tappedIndexPath.row].poster, attributes: myAttributes)
-        
-        let strMovie = NSMutableAttributedString(string: " movie")
-
-        strLike.append(strMovieName)
-        strLike.append(strMovie)
-
-        let alertMsg = strLike
-        
+        // Access Cell and update like dislike
         let cell = movieTableView.cellForRow(at: tappedIndexPath) as! MovieTableViewCell
-        
         if isLiked {
             cell.btnLike.setImage(UIImage(named: "icon_liked"), for: .normal)
             cell.btnUnlike.setImage(UIImage(named: "icon_dislike"), for: .normal)
@@ -83,22 +69,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell.btnLike.setImage(UIImage(named: "icon_like"), for: .normal)
         }
         
+       
+        //MARK: alert values set and call
+        let strLike = NSMutableAttributedString(string: isLiked ? "You liked " : "You disliked ")
+        let strMovieName = NSMutableAttributedString(string: movieInfo[tappedIndexPath.row].poster, attributes: myAttributes)
         
-        displayAlert(title: alertTitle, msg: alertMsg)
+        let strMovie = NSMutableAttributedString(string: " movie")
+
+        strLike.append(strMovieName)
+        strLike.append(strMovie)
+        let alertMsg = strLike
+        displayAlert(msg: alertMsg)
     }
     
     //MARK: setup alert controller
-    func displayAlert(title: NSMutableAttributedString, msg: NSMutableAttributedString) {
+    func displayAlert(msg: NSMutableAttributedString) {
         let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
-        
         alert.setValue(msg, forKey: "attributedMessage")
 
         let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
-
         alert.addAction(action)
-
         present(alert, animated: true, completion: nil)
-
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
